@@ -6,6 +6,8 @@ const port = 3000
 
 app.engine('hbs', exphbs({extname: '.hbs'}))
 app.set('view engine', 'hbs')
+// body-parser
+app.use(express.urlencoded({extended: true}))
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
