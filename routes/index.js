@@ -1,11 +1,28 @@
-const adminControllers = require('../controllers/adminControllers.js')
 const restControllers = require('../controllers/restControllers.js')
+const adminControllers = require('../controllers/adminControllers.js')
 const userControllers = require('../controllers/userControllers.js')
+
 module.exports = (app, passport) => {
+  // 驗證登入
+  const authenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    res.redirect('/signin')
+  }
+  const authenticatedAdmin = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.isAdmin) { return next() }
+      return res.redirect('/')
+    }
+    res.redirect('/signin')
+  }
   // 前台
-  app.get('/', (req, res) => res.redirect('/restaurants'))
-  app.get('/restaurants', restControllers.getRestaurants)
-  
+  app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
+  app.get('/restaurants', authenticated, restControllers.getRestaurants)
+  // 後台
+  app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
+  app.get('/admin/restaurants', authenticatedAdmin, adminControllers.getRestaurants)
   // 註冊
   app.get('/signup', userControllers.SignUpPage)
   app.post('/signup', userControllers.SignUp)
