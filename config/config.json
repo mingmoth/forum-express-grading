@@ -4,7 +4,9 @@
     "password": "password",
     "database": "forum",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": true,
+    "logQueryParameter": false
   },
   "test": {
     "username": "root",

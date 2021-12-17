@@ -35,11 +35,21 @@ module.exports = (app, passport) => {
   // admin(後台)
   app.get('/admin', (req, res) => res.redirect('/admin/restaurants'))
   app.get('/admin/restaurants', adminControllers.getRestaurants)
-  // get one Restaurant
-  app.get('/admin/restaurants/:id' ,authenticatedAdmin, adminControllers.getRestaurant)
-  // get one Restaurant edit page
+  // go one Restaurant edit page
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminControllers.editRestaurant)
+  // edit one Restaurnat
   app.put('/admin/restaurants/:id', authenticatedAdmin, adminControllers.putRestaurant)
+
+  // go create Restaurant page
   app.get('/admin/restaurants/create', authenticatedAdmin, adminControllers.createRestaurant)
+  // create Restaurant
   app.post('/admin/restaurants', authenticatedAdmin, adminControllers.postRestaurant)
+
+  // get one Restaurant
+  app.get('/admin/restaurants/:id', authenticatedAdmin, adminControllers.getRestaurant)
+
+  // delete one Restaurant
+  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminControllers.deleteRestaurant)
+
+
 }

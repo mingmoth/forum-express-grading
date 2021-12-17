@@ -1,8 +1,7 @@
 {{#if restaurant}}
-{{!-- 要支援 _method 這種用法，我們需要先安裝 method-override --}}
 <form action="/admin/restaurants/{{restaurant.id}}?_method=PUT" method="POST">
 {{else}}
-<form action="/admin/restaurants" method="POST"></form>
+<form action="/admin/restaurants" method="POST">
 {{/if}}
   <div class="form-group">
     <label for="name">Name</label>
@@ -16,12 +15,14 @@
 
   <div class="form-group">
     <label for="address">Address</label>
-    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address" value="{{restaurant.address}}">
+    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address"
+      value="{{restaurant.address}}">
   </div>
 
   <div class="form-group">
     <label for="opening_hours">Opening Hours</label>
-    <input type="time" class="form-control" name="opening_hours" id="opening_hours" placeholder="Enter opening_hours" value="{{restaurant.opening_hours}}">
+    <input type="time" class="form-control" name="opening_hours" id="opening_hours" placeholder="Enter opening_hours"
+      value="{{restaurant.opening_hours}}">
   </div>
 
   <div class="form-group">
