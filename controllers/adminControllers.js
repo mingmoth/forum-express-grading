@@ -36,7 +36,7 @@ const adminControllers = {
             address: req.body.address,
             opening_hours: req.body.opening_hours,
             description: req.body.description,
-            image: file ? `upload/${file.originalname}` : null
+            image: file ? `/upload/${file.originalname}` : null
           }).then((restaurant) => {
             req.flash('success_messages', '成功新增餐廳與圖片')
             return res.redirect('/admin/restaurants')
