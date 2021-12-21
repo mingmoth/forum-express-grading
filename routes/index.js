@@ -2,6 +2,10 @@ const restControllers = require('../controllers/restControllers.js')
 const adminControllers = require('../controllers/adminControllers.js')
 const userControllers = require('../controllers/userControllers.js')
 
+// 這個temp資料夾是暫時的，通常定期會清空
+const multer = require('multer')
+const upload = multer({dest: 'temp/'})
+
 module.exports = (app, passport) => {
   // 驗證登入
   const authenticated = (req, res, next) => {
@@ -38,12 +42,12 @@ module.exports = (app, passport) => {
   // go one Restaurant edit page
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminControllers.editRestaurant)
   // edit one Restaurnat
-  app.put('/admin/restaurants/:id', authenticatedAdmin, adminControllers.putRestaurant)
+  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminControllers.putRestaurant)
 
   // go create Restaurant page
   app.get('/admin/restaurants/create', authenticatedAdmin, adminControllers.createRestaurant)
   // create Restaurant
-  app.post('/admin/restaurants', authenticatedAdmin, adminControllers.postRestaurant)
+  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminControllers.postRestaurant)
 
   // get one Restaurant
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminControllers.getRestaurant)

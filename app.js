@@ -30,6 +30,8 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
+// /upload 這組路由，這裡因為是靜態檔案，所以不需要像其他的路由一樣寫 controller 邏輯，直接用 express.static 來指定路徑就可以了
+app.use('/upload', express.static(__dirname + '/upload'))
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
