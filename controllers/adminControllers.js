@@ -1,5 +1,7 @@
 const db = require('../models')
 const fs = require('fs')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = '3afa4686f2056a9'
 const Restaurant = db.Restaurant
 
 const adminControllers = {
@@ -26,21 +28,19 @@ const adminControllers = {
       return res.redirect('back')
     }
     const { file } = req
-    if(file) {
-      fs.readFile(file.path, (err, data) => {
-        if(err) console.log("Error: ", err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.create({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: file ? `/upload/${file.originalname}` : null
-          }).then((restaurant) => {
-            req.flash('success_messages', '成功新增餐廳與圖片')
-            return res.redirect('/admin/restaurants')
-          })
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.create({
+          name: req.body.name,
+          tel: req.body.tel,
+          address: req.body.address,
+          opening_hours: req.body.opening_hours,
+          description: req.body.description,
+          image: file ? img.data.link : null
+        }).then((restaurant) => {
+          req.flash('success_messages', '成功新增餐廳與圖片')
+          return res.redirect('/admin/restaurants')
         })
       })
     } else {
@@ -69,22 +69,20 @@ const adminControllers = {
       return res.redirect('back')
     }
     const { file } = req
-    if(file) {
-      fs.readFile(file.path, (err, data) => {
-        if(err) console.log("Error: ", error)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.findByPk(req.params.id).then((restaurant) => {
-            restaurant.update({
-              name: req.body.name,
-              tel: req.body.tel,
-              address: req.body.address,
-              opening_hours: req.body.opening_hours,
-              description: req.body.description,
-              image: file ? `/upload/${file.originalname}` : restaurant.image
-            }).then((restaurant) => {
-              req.flash('success_messages', '已成功更新餐廳資訊與圖片')
-              res.redirect(`/admin/restaurants/${req.params.id}`)
-            })
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.findByPk(req.params.id).then((restaurant) => {
+          restaurant.update({
+            name: req.body.name,
+            tel: req.body.tel,
+            address: req.body.address,
+            opening_hours: req.body.opening_hours,
+            description: req.body.description,
+            image: file ? img.data.link : restaurant.image
+          }).then((restaurant) => {
+            req.flash('success_messages', '已成功更新餐廳資訊與圖片')
+            res.redirect(`/admin/restaurants/${req.params.id}`)
           })
         })
       })
