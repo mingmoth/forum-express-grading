@@ -45,6 +45,8 @@ module.exports = (app, passport) => {
   app.get('/admin/categories/:id', authenticatedAdmin, adminController.getCategories)
   // create new category
   app.post('/admin/categories', authenticatedAdmin, adminController.postCategory)
+  // delete one category 
+  app.delete('/admin/categories/:id', authenticatedAdmin, adminController.deleteCategory)
   // toggle user isAdmin
   app.put('/admin/users/:id/toggleAdmin',  authenticatedAdmin, adminController.toggleAdmin)
   // go one Restaurant edit page

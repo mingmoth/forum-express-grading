@@ -42,6 +42,15 @@ const adminController = {
       }
     })
   },
+  // delete Category
+  deleteCategory: (req, res) => {
+    return Category.findByPk(req.params.id).then((category) => {
+      category.destroy().then(() => {
+        req.flash('success_messages', '餐廳類別刪除成功')
+        res.redirect('/admin/categories')
+      })
+    })
+  },
   // get all Users
   getUsers: (req, res) => {
     return User.findAll({raw: true}).then((users) => {
