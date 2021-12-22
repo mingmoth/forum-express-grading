@@ -5,7 +5,7 @@
 {{#if category}}
 <form style="float: right;" action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
   <div class="form-group d-flex">
-    <input type="string" class="form-control" name="newCategory" id="newCategory" placeholder="New Category" style="height: 30px;" value="{{category.name}}"><span class="ml-2"><button type="submit" class="btn btn-secondary" style="height: 30px; padding: 0;">Update</button></span><span class="ml-2"><a href="/admin/categories" class="btn btn-secondary" style="height: 30px; padding: 0; font-size: 18px;">Back</a></span>
+    <input type="string" class="form-control" name="name" id="name" placeholder="New Category" style="height: 30px;" value="{{category.name}}"><span class="ml-2"><button type="submit" class="btn btn-secondary" style="height: 30px; padding: 0;">Update</button></span><span class="ml-2"><a href="/admin/categories" class="btn btn-secondary" style="height: 30px; padding: 0; font-size: 18px;">Back</a></span>
   </div>
 </form>
 {{else}}

@@ -13,36 +13,44 @@ const adminController = {
       raw: true,
       nest: true
     }).then(categories => {
-      if(req.params.id) {
+      if (req.params.id) {
         Category.findByPk(req.params.id).then((category) => {
           return res.render('admin/categories', { category: category.toJSON(), categories: categories })
         })
       } else {
-        return res.render('admin/categories', {categories: categories})
-      } 
+        return res.render('admin/categories', { categories: categories })
+      }
     })
   },
   // create Category
   postCategory: (req, res) => {
-    if(!req.body.newCategory) {
+    if (!req.body.newCategory) {
       req.flash('error_messages', "請填寫餐廳類別名稱")
       return res.redirect('back')
     }
-    Category.findAll({raw: true, nest: true}).then(categories => {
-      if(req.body.newCategory === categories.name) {
-        req.flash('error_messages', "餐廳類別名稱重複")
-        return res.redirect('back')
-      } else {
-        Category.create({
-          name: req.body.newCategory
-        }).then(categories => {
-          req.flash('success_messages', '餐廳類別新增成功')
-          res.redirect('/admin/categories')
-        })
-      }
+    Category.create({
+      name: req.body.newCategory
+    }).then(categories => {
+      req.flash('success_messages', '餐廳類別新增成功')
+      res.redirect('/admin/categories')
     })
   },
-  // delete Category
+  // update one Category
+  putCategory: (req, res) => {
+    if (!req.body.name) {
+      req.flash('error_messages', "請填寫餐廳類別名稱")
+      return res.redirect('back')
+    }
+    Category.findByPk(req.params.id).then(category => {
+      category.update({
+        name: req.body.name
+      }).then(() => {
+        req.flash('success_messages', '餐廳類別更新成功')
+        res.redirect('/admin/categories')
+      })
+    })
+  },
+  // delete one Category
   deleteCategory: (req, res) => {
     return Category.findByPk(req.params.id).then((category) => {
       category.destroy().then(() => {
@@ -53,7 +61,7 @@ const adminController = {
   },
   // get all Users
   getUsers: (req, res) => {
-    return User.findAll({raw: true}).then((users) => {
+    return User.findAll({ raw: true }).then((users) => {
       return res.render('admin/users', { users: users })
     })
   },
@@ -100,7 +108,7 @@ const adminController = {
       nest: true,
     }).then(categories => {
       return res.render('admin/create', { categories: categories })
-    }) 
+    })
   },
   // create new restaurant
   postRestaurant: (req, res) => {
@@ -153,7 +161,7 @@ const adminController = {
         })
       })
     })
-    
+
   },
   putRestaurant: (req, res) => {
     if (!req.body.name) {
