@@ -7,6 +7,10 @@ const User = db.User
 const Category = db.Category
 
 const adminController = {
+  // get all Categories
+  getCategories: (req, res) => {
+    return Category.findAll({ raw: true }).then(categories => { return res.render('admin/categories', { categories: categories})})
+  },
   // get all Users
   getUsers: (req, res) => {
     return User.findAll({raw: true}).then((users) => {

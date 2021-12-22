@@ -38,8 +38,9 @@ module.exports = (app, passport) => {
 
   // admin(後台)
   app.get('/admin', (req, res) => res.redirect('/admin/restaurants'))
-  app.get('/admin/restaurants', adminController.getRestaurants)
+  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+  app.get('/admin/categories', authenticatedAdmin, adminController.getCategories)
   // toggle user isAdmin
   app.put('/admin/users/:id/toggleAdmin',  authenticatedAdmin, adminController.toggleAdmin)
   // go one Restaurant edit page
