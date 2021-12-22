@@ -1,6 +1,6 @@
-const restControllers = require('../controllers/restControllers.js')
-const adminControllers = require('../controllers/adminControllers.js')
-const userControllers = require('../controllers/userControllers.js')
+const restController = require('../controllers/restController.js')
+const adminController = require('../controllers/adminController.js')
+const userController = require('../controllers/userController.js')
 
 // 這個temp資料夾是暫時的，通常定期會清空
 const multer = require('multer')
@@ -23,37 +23,40 @@ module.exports = (app, passport) => {
   }
   // 前台
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
-  app.get('/restaurants', authenticated, restControllers.getRestaurants)
+  app.get('/restaurants', authenticated, restController.getRestaurants)
   // 後台
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
-  app.get('/admin/restaurants', authenticatedAdmin, adminControllers.getRestaurants)
+  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
   // 註冊
-  app.get('/signup', userControllers.SignUpPage)
-  app.post('/signup', userControllers.SignUp)
+  app.get('/signup', userController.SignUpPage)
+  app.post('/signup', userController.SignUp)
 
   // 登入
-  app.get('/signin', userControllers.signInPage)
-  app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userControllers.signIn)
-  app.get('/logout', userControllers.logout)
+  app.get('/signin', userController.signInPage)
+  app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)
+  app.get('/logout', userController.logout)
 
   // admin(後台)
   app.get('/admin', (req, res) => res.redirect('/admin/restaurants'))
-  app.get('/admin/restaurants', adminControllers.getRestaurants)
+  app.get('/admin/restaurants', adminController.getRestaurants)
+  app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+  // toggle user isAdmin
+  app.put('/admin/users/:id/toggleAdmin',  authenticatedAdmin, adminController.toggleAdmin)
   // go one Restaurant edit page
-  app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminControllers.editRestaurant)
+  app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
   // edit one Restaurnat
-  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminControllers.putRestaurant)
+  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 
   // go create Restaurant page
-  app.get('/admin/restaurants/create', authenticatedAdmin, adminControllers.createRestaurant)
+  app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
   // create Restaurant
-  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminControllers.postRestaurant)
+  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 
   // get one Restaurant
-  app.get('/admin/restaurants/:id', authenticatedAdmin, adminControllers.getRestaurant)
+  app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
 
   // delete one Restaurant
-  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminControllers.deleteRestaurant)
-
-
+  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 }
+
+

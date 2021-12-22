@@ -4,7 +4,7 @@ const { resetWatchers } = require('nodemon/lib/monitor/watch')
 const db = require('../models')
 const User = db.User
 
-const userControllers = {
+const userController = {
   SignUpPage: (req, res) => {
     return res.render('signup')
   },
@@ -49,4 +49,4 @@ const userControllers = {
 
 }
 
-module.exports = userControllers
+module.exports = userController
