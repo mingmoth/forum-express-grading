@@ -9,7 +9,18 @@ const Category = db.Category
 const adminController = {
   // get all Categories
   getCategories: (req, res) => {
-    return Category.findAll({ raw: true }).then(categories => { return res.render('admin/categories', { categories: categories})})
+    Category.findAll({
+      raw: true,
+      nest: true
+    }).then(categories => {
+      if(req.params.id) {
+        Category.findByPk(req.params.id).then((category) => {
+          return res.render('admin/categories', { category: category.toJSON(), categories: categories })
+        })
+      } else {
+        return res.render('admin/categories', {categories: categories})
+      } 
+    })
   },
   // get all Users
   getUsers: (req, res) => {

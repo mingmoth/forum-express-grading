@@ -2,11 +2,21 @@
 
 <a href="/admin/restaurants">Restaurants</a><span> | <a href="/admin/users">Users</a></span><span> | <a href="/admin/categories">Categories</a></span>
 
-<form style="float: right;">
+{{#if category}}
+<form style="float: right;" action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
   <div class="form-group d-flex">
-    <input type="string" class="form-control" name="newCategory" id="newCategory" placeholder="New Category" style="height: 30px;"><span class="ml-2"><button type="submit" class="btn-secondary" style="height: 30px;">Create</button></span>
+    <input type="string" class="form-control" name="newCategory" id="newCategory" placeholder="New Category" style="height: 30px;" value="{{category.name}}"><span class="ml-2"><button type="submit" class="btn btn-secondary" style="height: 30px; padding: 0;">Update</button></span><span class="ml-2"><a href="/admin/categories" class="btn btn-secondary" style="height: 30px; padding: 0; font-size: 18px;">Back</a></span>
   </div>
 </form>
+{{else}}
+<form style="float: right;" action="/admin/categories" method="POST">
+  <div class="form-group d-flex">
+    <input type="string" class="form-control" name="newCategory" id="newCategory" placeholder="New Category"
+      style="height: 30px;"><span class="ml-2"><button type="submit" class="btn btn-secondary"
+        style="height: 30px; padding: 0;">Create</button></span>
+  </div>
+</form>
+{{/if}}
 
 <br />
 <br />
@@ -27,11 +37,11 @@
       <td>
         
         <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}/edit">
+          <a href="/admin/categories/{{this.id}}">
             Edit
           </a>
         </button>
-        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+        <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link">Delete</button>
         </form>
       </td>
