@@ -22,6 +22,26 @@ const adminController = {
       } 
     })
   },
+  // create Category
+  postCategory: (req, res) => {
+    if(!req.body.newCategory) {
+      req.flash('error_messages', "請填寫餐廳類別名稱")
+      return res.redirect('back')
+    }
+    Category.findAll({raw: true, nest: true}).then(categories => {
+      if(req.body.newCategory === categories.name) {
+        req.flash('error_messages', "餐廳類別名稱重複")
+        return res.redirect('back')
+      } else {
+        Category.create({
+          name: req.body.newCategory
+        }).then(categories => {
+          req.flash('success_messages', '餐廳類別新增成功')
+          res.redirect('/admin/categories')
+        })
+      }
+    })
+  },
   // get all Users
   getUsers: (req, res) => {
     return User.findAll({raw: true}).then((users) => {
