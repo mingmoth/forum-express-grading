@@ -30,7 +30,7 @@
       </td>
       <td>
         
-        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+        <form action="/admin/users/{{this.id}}/toggleAdmin?_method=PUT" method="POST" style="display: inline;">
           {{#if this.isAdmin}}
           <button type="submit" class="btn btn-link">Set as User</button>
           {{else}}
