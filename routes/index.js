@@ -54,6 +54,6 @@ module.exports = (app, passport) => {
 
   // delete one Restaurant
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminControllers.deleteRestaurant)
-
-
 }
+
+
