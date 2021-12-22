@@ -3,8 +3,15 @@ const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
+const User = db.User
 
-const adminControllers = {
+const adminController = {
+  // get all Users
+  getUsers: (req, res) => {
+    return User.findAll({raw: true}).then((users) => {
+      return res.render('admin/users', { users: users })
+    })
+  },
   // get all restaurants
   getRestaurants: (req, res) => {
     return Restaurant.findAll({ raw: true }).then(restaurants => {
@@ -116,4 +123,4 @@ const adminControllers = {
   }
 }
 
-module.exports = adminControllers
+module.exports = adminController

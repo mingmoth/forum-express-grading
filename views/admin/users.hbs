@@ -2,14 +2,6 @@
 
 <a href="/admin/restaurants">Restaurants</a><span> | <a href="/admin/users">Users</a></span>
 
-
-
-<a href='/admin/restaurants/create' style="float: right;">
-  Create New Restaurant
-</a>
-
-
-
 <br />
 <br />
 
@@ -18,27 +10,32 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Name</th>
-      <th scope="col">Action</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">Authority</th>
     </tr>
   </thead>
   <tbody>
-    {{#each restaurants}}
+    {{#each users}}
     <tr>
       <th scope="row">{{this.id}}</th>
       <td>{{this.name}}</td>
+      <td>{{this.email}}</td>
       <td>
-        <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}">
-            Show
-          </a>
-        </button>
-        <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}/edit">
-            Edit
-          </a>
-        </button>
+        {{#if this.isAdmin}}
+        admin
+        {{else}}
+        user
+        {{/if}}
+      </td>
+      <td>
+        
         <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link">Delete</button>
+          {{#if this.isAdmin}}
+          <button type="submit" class="btn btn-link">Set as User</button>
+          {{else}}
+          <button type="submit" class="btn btn-link">Set as Admin</button>
+          {{/if}}
         </form>
       </td>
     </tr>
