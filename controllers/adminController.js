@@ -4,6 +4,7 @@ const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 
 const adminController = {
   // get all Users
@@ -30,14 +31,22 @@ const adminController = {
   },
   // get all restaurants
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ raw: true }).then(restaurants => {
+    return Restaurant.findAll({
+      raw: true,
+      nest: true,
+      include: [Category]
+    }).then(restaurants => {
+      // console.log(restaurants) // 加入 console 觀察資料的變化
       return res.render('admin/restaurants', { restaurants: restaurants })
     })
   },
   // get one restaurant
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { raw: true }).then(restaurant => {
-      return res.render('admin/restaurant', { restaurant: restaurant })
+    return Restaurant.findByPk(req.params.id, {
+      include: [Category]
+    }).then(restaurant => {
+      // 只需要處理「一筆資料」時，我們會建議用 .toJSON() 把 Sequelize 回傳的整包物件直接轉成 JSON 格式
+      return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
     })
   },
   // create page
