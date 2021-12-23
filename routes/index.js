@@ -41,31 +41,35 @@ module.exports = (app, passport) => {
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   app.get('/admin/categories', authenticatedAdmin, adminController.getCategories)
-  // get one category
+  // admin get one category
   app.get('/admin/categories/:id', authenticatedAdmin, adminController.getCategories)
-  // create new category
+  // admin create new category
   app.post('/admin/categories', authenticatedAdmin, adminController.postCategory)
-  // delete one category 
+  // admin delete one category
   app.delete('/admin/categories/:id', authenticatedAdmin, adminController.deleteCategory)
-  // update one category
+  // admin update one category
   app.put('/admin/categories/:id', authenticatedAdmin, adminController.putCategory)
-  // toggle user isAdmin
+  // admin toggle user isAdmin
   app.put('/admin/users/:id/toggleAdmin',  authenticatedAdmin, adminController.toggleAdmin)
-  // go one Restaurant edit page
+  // admin go one Restaurant edit page
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
-  // edit one Restaurnat
+  // admin edit one Restaurnat
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 
-  // go create Restaurant page
+  // admin go create Restaurant page
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
-  // create Restaurant
+  // admin  create Restaurant
   app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 
-  // get one Restaurant
+  // admin get one Restaurant
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
 
-  // delete one Restaurant
+  // admin delete one Restaurant
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+
+
+  // 前台頁面
+  app.get('/restaurants', authenticated, restController.getRestaurants)
 }
 
 
