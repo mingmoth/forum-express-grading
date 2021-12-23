@@ -1,8 +1,7 @@
 const bcrypt = require('bcryptjs')
-const req = require('express/lib/request')
-const { resetWatchers } = require('nodemon/lib/monitor/watch')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const helpers = require('../_helpers')
 const db = require('../models')
 const User = db.User
 
@@ -50,13 +49,11 @@ const userController = {
   },
   getUser: (req, res) => {
     return User.findByPk(req.params.id).then(user => {
-      return res.render(`profile`, { user: user.toJSON(), userId: req.user.id })
+      return res.render(`profile`, { user: user.toJSON(), userId: helpers.getUser(req).id })
     })
   },
   editUser: (req, res) => {
-    let queryId = req.params.id
-    console.log('user:', req.user.id, '/ query:', queryId)
-    if(Number(req.user.id) !== Number(req.params.id)) {
+    if (Number(helpers.getUser(req).id) !== Number(req.params.id)) {
       req.flash('error_messages', '非當前使用者')
       return res.redirect('back')
     }
