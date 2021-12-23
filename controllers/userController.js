@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs')
 const req = require('express/lib/request')
 const { resetWatchers } = require('nodemon/lib/monitor/watch')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const db = require('../models')
 const User = db.User
 
@@ -67,14 +69,32 @@ const userController = {
       req.flash('error_messages', "請填寫使用者名稱")
       return res.redirect('back')
     }
-    return User.findByPk(req.params.id).then(user => {
-      user.update({
-        name: req.body.name,
-      }).then(() => {
-        req.flash('success_messages', '使用者資料更新成功')
-        res.redirect(`/users/${req.params.id}`)
+    const { file } = req
+    if(file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(req.params.id).then(user => {
+          user.update({
+            name: req.body.name,
+            image: file ? img.data.link : user.image
+          }).then(() => {
+            req.flash('success_messages', '使用者資料與照片更新成功')
+            res.redirect(`/users/${req.params.id}`)
+          })
+        })
       })
-    })
+    } else {
+      return User.findByPk(req.params.id).then(user => {
+        user.update({
+          name: req.body.name,
+          image: null
+        }).then(() => {
+          req.flash('success_messages', '使用者資料更新成功')
+          res.redirect(`/users/${req.params.id}`)
+        })
+      })
+    }
+    
   }
 }
 

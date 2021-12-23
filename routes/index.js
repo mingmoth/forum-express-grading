@@ -84,7 +84,7 @@ module.exports = (app, passport) => {
   // 使用者編輯頁
   app.get('/users/:id/edit', authenticated, userController.editUser)
   // 
-  app.put('/users/:id', authenticated, userController.putUser)
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 }
 
 
