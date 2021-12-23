@@ -62,6 +62,20 @@ const userController = {
       return res.render('edit', { user: user.toJSON() })
     })
   },
+  putUser: (req, res) => {
+    if(!req.body.name) {
+      req.flash('error_messages', "請填寫使用者名稱")
+      return res.redirect('back')
+    }
+    return User.findByPk(req.params.id).then(user => {
+      user.update({
+        name: req.body.name,
+      }).then(() => {
+        req.flash('success_messages', '使用者資料更新成功')
+        res.redirect(`/users/${req.params.id}`)
+      })
+    })
+  }
 }
 
 module.exports = userController
