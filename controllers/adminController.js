@@ -23,7 +23,7 @@ const adminController = {
     })
   },
   // create Category
-  async postCategory (req, res) {
+  postCategory: async(req, res) => {
     if (!req.body.newCategory) {
       req.flash('error_messages', "請填寫餐廳類別名稱")
       return res.redirect('back')

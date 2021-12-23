@@ -4,6 +4,8 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const helpers = require('../_helpers')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 
 const userController = {
   SignUpPage: (req, res) => {
@@ -48,7 +50,10 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
-    return User.findByPk(req.params.id).then(user => {
+    return User.findByPk(req.params.id, {
+      include: [{model: Comment, include: [{model: Restaurant}]}]
+    }).then(user => {
+      console.log(user.toJSON().Comments[0].Restaurant.image)
       return res.render(`profile`, { user: user.toJSON(), userId: helpers.getUser(req).id })
     })
   },
@@ -62,8 +67,8 @@ const userController = {
     })
   },
   putUser: (req, res) => {
-    if(!req.body.name) {
-      req.flash('error_messages', "請填寫使用者名稱")
+    if(!req.body.name || !req.body.email) {
+      req.flash('error_messages', "請填寫使用者名稱與電子郵件")
       return res.redirect('back')
     }
     const { file } = req
