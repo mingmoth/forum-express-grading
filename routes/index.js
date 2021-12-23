@@ -1,3 +1,4 @@
+const helpers = require('../_helpers')
 const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
@@ -10,14 +11,14 @@ const upload = multer({dest: 'temp/'})
 module.exports = (app, passport) => {
   // 驗證登入
   const authenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
+    if (helpers.ensureAuthenticated(req)) {
       return next()
     }
     res.redirect('/signin')
   }
   const authenticatedAdmin = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      if (req.user.isAdmin) { return next() }
+    if (helpers.ensureAuthenticated(req)) {
+      if (helpers.getUser(req).isAdmin) { return next() }
       return res.redirect('/')
     }
     res.redirect('/signin')
@@ -78,6 +79,13 @@ module.exports = (app, passport) => {
   app.post('/comments', authenticated, commentController.postComment)
   // delete comment in Restaurant page
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
+
+  // 使用者頁面
+  app.get('/users/:id', authenticated, userController.getUser),
+  // 使用者編輯頁
+  app.get('/users/:id/edit', authenticated, userController.editUser)
+  // 
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 }
 
 
