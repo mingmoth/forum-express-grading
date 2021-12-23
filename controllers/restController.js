@@ -54,17 +54,19 @@ const restController = {
   getRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, { include: 
       [Category,
+        // 這在資料庫的術語裡叫做 eager loading，是預先加載的意思
       {model: Comment, include: [User]}]
     }).then(restaurant => {
-      console.log(restaurant)
-      return res.render('restaurant', { restaurant: restaurant.toJSON() })
+      return res.render('restaurant', {
+        restaurant: restaurant.toJSON(),
+      })
       // const data = ({
       //   ...restaurant.dataValues,
       //   categoryName: restaurant.dataValues.Category.name
       // })
       // return res.render('restaurant', {restaurant: data})
     })
-  }
+  },
 }
 
 module.exports = restController

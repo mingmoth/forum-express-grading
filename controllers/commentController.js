@@ -15,7 +15,18 @@ const commentController = {
       req.flash('success_messages', '餐廳評論新增成功')
       return res.redirect(`/restaurants/${req.body.restaurantId}`)
     })
-  }
+  },
+  deleteComment: (req, res) => {
+    return Comment.findByPk(req.params.id)
+      .then((comment) => {
+        comment.destroy()
+          .then((comment) => {
+            req.flash('success_messages', '成功刪除餐廳評論')
+            res.redirect(`/restaurants/${comment.RestaurantId}`)
+          })
+      })
+  },
+  
 }
 
 module.exports = commentController

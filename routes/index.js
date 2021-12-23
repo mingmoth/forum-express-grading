@@ -76,6 +76,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
   // create comment in one Restaurant page
   app.post('/comments', authenticated, commentController.postComment)
+  // delete comment in Restaurant page
+  app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 }
 
 

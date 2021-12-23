@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <h1>{{restaurant.name}}</h1>
     <p class="badge badge-secondary">{{restaurant.Category.name}}</p>
-    <a href="javascript:history.back()" style="float:right;">回上一頁</a>
+    <a href="/restaurants" style="float:right;">回上一頁</a>
   </div>
   <div class="col-md-4">
     <img class="img-responsive center-block" src="{{restaurant.image}}" style="width: 250px;margin-bottom: 25px;">
@@ -25,6 +25,11 @@
 
 <h3>所有評論：</h3>
 {{#each restaurant.Comments}}
+{{#if ../user.isAdmin}}
+<form action="/comments/{{this.id}}?_method=DELETE" method="POST" style="float: right;">
+  <button type="submit" class="btn btn-outline-danger">Delete</button>
+</form>
+{{/if}}
 <blockquote class="blockquote mb-0">
   <h4><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h4>
   <p>{{this.text}}</p>
