@@ -48,10 +48,20 @@ const userController = {
   },
   getUser: (req, res) => {
     return User.findByPk(req.params.id).then(user => {
-      console.log(user)
-      return res.render(`user`, {user: user.toJSON()})
+      return res.render(`profile`, { user: user.toJSON(), userId: req.user.id })
     })
-  }
+  },
+  editUser: (req, res) => {
+    let queryId = req.params.id
+    console.log('user:', req.user.id, '/ query:', queryId)
+    if(Number(req.user.id) !== Number(req.params.id)) {
+      req.flash('error_messages', '非當前使用者')
+      return res.redirect('back')
+    }
+    return User.findByPk(req.params.id).then((user) => {
+      return res.render('edit', { user: user.toJSON() })
+    })
+  },
 }
 
 module.exports = userController

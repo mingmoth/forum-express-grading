@@ -9,6 +9,11 @@
         <li><strong>Email:</strong> {{user.email}}</li>
       </ul>
     </div>
+    {{#ifCond user.id userId}}
+    <a href='/users/{{user.id}}/edit' >
+      Edit
+    </a>
+    {{/ifCond}}
   </div>
   <hr>
 </div>
