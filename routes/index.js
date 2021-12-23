@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
+const commentController = require('../controllers/commentController.js')
 
 // 這個temp資料夾是暫時的，通常定期會清空
 const multer = require('multer')
@@ -73,6 +74,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants', authenticated, restController.getRestaurants)
   // one Restaurant
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  // create comment in one Restaurant page
+  app.post('/comments', authenticated, commentController.postComment)
 }
 
 
