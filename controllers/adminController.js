@@ -95,7 +95,6 @@ const adminController = {
       nest: true,
       include: [Category]
     }).then(restaurants => {
-      // console.log(restaurants) // 加入 console 觀察資料的變化
       return res.render('admin/restaurants', { restaurants: restaurants })
     })
   },

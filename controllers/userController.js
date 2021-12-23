@@ -53,7 +53,6 @@ const userController = {
     return User.findByPk(req.params.id, {
       include: [{model: Comment, include: [{model: Restaurant}]}]
     }).then(user => {
-      console.log(user.toJSON().Comments[0].Restaurant.image)
       return res.render(`profile`, { user: user.toJSON(), userId: helpers.getUser(req).id })
     })
   },
