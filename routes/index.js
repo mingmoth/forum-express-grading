@@ -69,7 +69,10 @@ module.exports = (app, passport) => {
 
 
   // 前台頁面
+  // all Restaurants
   app.get('/restaurants', authenticated, restController.getRestaurants)
+  // one Restaurant
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 }
 
 
