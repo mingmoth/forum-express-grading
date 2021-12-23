@@ -4,8 +4,12 @@
 <form action="/users/{{user.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
   <div class="form-group">
     <label for="opening_hours">Name</label>
-    <input type="text" class="form-control" name="name" id="name" placeholder="Enter opening_hours"
+    <input type="text" class="form-control" name="name" id="name" placeholder="name"
       value="{{user.name}}">
+  </div>
+  <div class="form-group">
+    <label for="opening_hours">Name</label>
+    <input type="text" class="form-control" name="email" id="email" placeholder="email" value="{{user.email}}">
   </div>
   <div class="form-group">
     <label for="image">Image</label>

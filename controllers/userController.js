@@ -72,10 +72,10 @@ const userController = {
       imgur.upload(file.path, (err, img) => {
         return User.findByPk(req.params.id).then(user => {
           user.update({
-            name: req.body.name,
+            ...req.body,
             image: file ? img.data.link : user.image
           }).then(() => {
-            req.flash('success_messages', '使用者資料與照片更新成功')
+            req.flash('success_messages', '使用者資料編輯成功')
             res.redirect(`/users/${req.params.id}`)
           })
         })
@@ -83,10 +83,10 @@ const userController = {
     } else {
       return User.findByPk(req.params.id).then(user => {
         user.update({
-          name: req.body.name,
+          ...req.body,
           image: null
         }).then(() => {
-          req.flash('success_messages', '使用者資料更新成功')
+          req.flash('success_messages', '使用者資料編輯成功')
           res.redirect(`/users/${req.params.id}`)
         })
       })
