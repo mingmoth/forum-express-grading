@@ -7,6 +7,7 @@ const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
+const Like = db.Like
 
 const userController = {
   SignUpPage: (req, res) => {
@@ -52,7 +53,7 @@ const userController = {
   },
   getUser: (req, res) => {
     return User.findByPk(req.params.id, {
-      include: [{model: Comment, include: [{model: Restaurant}]}]
+      include: [{ model: Comment, include: [{ model: Restaurant }] }]
     }).then(user => {
       return res.render(`profile`, { user: user.toJSON(), userId: helpers.getUser(req).id })
     })
@@ -67,12 +68,12 @@ const userController = {
     })
   },
   putUser: (req, res) => {
-    if(!req.body.name || !req.body.email) {
+    if (!req.body.name || !req.body.email) {
       req.flash('error_messages', "請填寫使用者名稱與電子郵件")
       return res.redirect('back')
     }
     const { file } = req
-    if(file) {
+    if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
         return User.findByPk(req.params.id).then(user => {
@@ -102,7 +103,7 @@ const userController = {
       UserId: req.user.id,
       RestaurantId: req.params.restaurantId
     })
-      .then((restaurant) => {
+      .then(() => {
         req.flash('success_messages', '成功收藏餐廳')
         return res.redirect('back')
       })
@@ -116,12 +117,34 @@ const userController = {
     })
       .then((favorite) => {
         favorite.destroy()
-          .then((restaurant) => {
+          .then(() => {
             req.flash('success_messages', '成功取消餐廳收藏')
             return res.redirect('back')
           })
       })
-  }
+  },
+  addLike: (req, res) => {
+    return Like.create({
+      UserId: helpers.getUser(req).id,
+      RestaurantId: req.params.restaurantId
+    }).then(() => {
+      req.flash('success_messages', '成功按讚')
+      return res.redirect('back')
+    })
+  },
+  removeLike: (req, res) => {
+    return Like.destroy({
+      where: {
+        UserId: helpers.getUser(req).id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then(() => {
+        req.flash('success_messages', '成功取消讚')
+        return res.redirect('back')
+      })
+
+  },
 }
 
 module.exports = userController
