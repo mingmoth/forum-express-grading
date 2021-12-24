@@ -78,6 +78,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   // one Restaurant
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  // Restaurant Dashboard
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashBoard)
   // create comment in one Restaurant page
   app.post('/comments', authenticated, commentController.postComment)
   // delete comment in Restaurant page
