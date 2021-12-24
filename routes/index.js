@@ -89,8 +89,12 @@ module.exports = (app, passport) => {
   app.get('/users/:id', authenticated, userController.getUser),
   // 使用者編輯頁
   app.get('/users/:id/edit', authenticated, userController.editUser)
-  // 
+  // 編輯使用者頁面
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
+  // 將餐廳收藏
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+  // 取消餐廳收藏
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
 }
 
 

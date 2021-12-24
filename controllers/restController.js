@@ -32,7 +32,8 @@ const restController = {
       const data = result.rows.map(r => ({
         ...r.dataValues,
         description: r.dataValues.description.length > 50 ? r.dataValues.description.substring(0, 50) + '...' : r.dataValues.description,
-        categoryName: r.dataValues.Category.name
+        categoryName: r.dataValues.Category.name,
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
       }))
       Category.findAll({
         raw: true,
@@ -55,12 +56,14 @@ const restController = {
     return Restaurant.findByPk(req.params.id, { include: 
       [Category,
         // 這在資料庫的術語裡叫做 eager loading，是預先加載的意思
+      {model: User, as: 'FavoritedUsers'},
       {model: Comment, include: [User]}]
     }).then(async(restaurant) =>  {
       await restaurant.increment('viewCounts')
       console.log(restaurant.dataValues.name, restaurant.dataValues.viewCounts)
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
+        isFavorited: restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       })
       // const data = ({
       //   ...restaurant.dataValues,

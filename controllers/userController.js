@@ -6,6 +6,7 @@ const db = require('../models')
 const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
+const Favorite = db.Favorite
 
 const userController = {
   SignUpPage: (req, res) => {
@@ -95,7 +96,31 @@ const userController = {
         })
       })
     }
-    
+  },
+  addFavorite: (req, res) => {
+    return Favorite.create({
+      UserId: req.user.id,
+      RestaurantId: req.params.restaurantId
+    })
+      .then((restaurant) => {
+        req.flash('success_messages', '成功收藏餐廳')
+        return res.redirect('back')
+      })
+  },
+  removeFavorite: (req, res) => {
+    return Favorite.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then((favorite) => {
+        favorite.destroy()
+          .then((restaurant) => {
+            req.flash('success_messages', '成功取消餐廳收藏')
+            return res.redirect('back')
+          })
+      })
   }
 }
 
