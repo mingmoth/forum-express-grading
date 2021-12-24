@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Favorite,
         foreignKey: 'RestaurantId',
         as: 'FavoritedUsers'
+      },
+      {
+        through: models.Like,
+        foreignKey: 'RestaurantId',
+        as: 'LikedUsers'
       })
     }
   };
