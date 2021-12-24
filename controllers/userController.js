@@ -7,6 +7,7 @@ const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
+const Like = db.Like
 
 const userController = {
   SignUpPage: (req, res) => {
@@ -102,7 +103,7 @@ const userController = {
       UserId: req.user.id,
       RestaurantId: req.params.restaurantId
     })
-      .then((restaurant) => {
+      .then(() => {
         req.flash('success_messages', '成功收藏餐廳')
         return res.redirect('back')
       })
@@ -116,12 +117,36 @@ const userController = {
     })
       .then((favorite) => {
         favorite.destroy()
-          .then((restaurant) => {
+          .then(() => {
             req.flash('success_messages', '成功取消餐廳收藏')
             return res.redirect('back')
           })
       })
-  }
+  },
+  addLike: (req, res) => {
+    return Like.create({
+      UserId: req.user.id,
+      RestaurantId: req.params.restaurantId
+    }).then(() => {
+      req.flash('success_messages', '成功按讚')
+      return res.redirect('back')
+    })
+  },
+  removeLike: (req, res) => {
+    return Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then((like) => {
+        like.destroy()
+          .then(() => {
+            req.flash('success_messages', '成功取消讚')
+            return res.redirect('back')
+          })
+      })
+  },
 }
 
 module.exports = userController
