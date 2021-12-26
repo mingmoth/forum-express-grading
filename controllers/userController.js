@@ -54,8 +54,14 @@ const userController = {
   },
   getUser: (req, res) => {
     return User.findByPk(req.params.id, {
-      include: [{ model: Comment, include: Restaurant }]
+      include: [
+        { model: Comment, include: Restaurant },
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings'}
+      ]
     }).then(user => {
+      console.log(user.toJSON())
       return res.render(`profile`, { user: user.toJSON(), userId: helpers.getUser(req).id })
     })
   },
