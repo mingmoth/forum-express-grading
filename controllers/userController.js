@@ -8,6 +8,7 @@ const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
 const Like = db.Like
+const Followship = db.Followship
 
 const userController = {
   SignUpPage: (req, res) => {
@@ -165,6 +166,26 @@ const userController = {
       })
 
   },
+  addFollowing: (req, res) => {
+    return Followship.create({
+      followingId: req.params.userId,
+      followerId: req.user.id
+    }).then(() => {
+      req.flash('success_messages', '成功追蹤使用者')
+      return res.redirect('back')
+    })
+  },
+  removeFollowing: (req, res) => {
+    return Followship.destroy({
+      where: {
+        followingId: req.params.userId,
+        followerId: req.user.id
+      }
+    }).then(() => {
+      req.flash('success_messages', '成功取消追蹤')
+      return res.redirect('back')
+    })
+  }
 }
 
 module.exports = userController
