@@ -58,6 +58,7 @@ const restController = {
       [Category,
         // 這在資料庫的術語裡叫做 eager loading，是預先加載的意思
       {model: User, as: 'FavoritedUsers'},
+      { model: User, as: 'LikedUsers' },
       {model: Comment, include: [User]}]
     }).then(async(restaurant) =>  {
       await restaurant.increment('viewCounts')

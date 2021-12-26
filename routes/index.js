@@ -84,7 +84,9 @@ module.exports = (app, passport) => {
   app.post('/comments', authenticated, commentController.postComment)
   // delete comment in Restaurant page
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
-
+  
+  // getTopUsers
+  app.get('/users/top', authenticated, userController.getTopUser)
   // 使用者頁面
   app.get('/users/:id', authenticated, userController.getUser),
   // 使用者編輯頁
