@@ -54,7 +54,7 @@ const userController = {
   },
   getUser: (req, res) => {
     return User.findByPk(req.params.id, {
-      include: [{ model: Comment, include: Restaurant  }]
+      include: [{ model: Comment, include: Restaurant }]
     }).then(user => {
       return res.render(`profile`, { user: user.toJSON(), userId: helpers.getUser(req).id })
     })
@@ -130,18 +130,16 @@ const userController = {
       })
   },
   removeFavorite: (req, res) => {
-    return Favorite.findOne({
+    return Favorite.destroy({
       where: {
         UserId: req.user.id,
         RestaurantId: req.params.restaurantId
       }
     })
       .then((favorite) => {
-        favorite.destroy()
-          .then(() => {
-            req.flash('success_messages', '成功取消餐廳收藏')
-            return res.redirect('back')
-          })
+        req.flash('success_messages', '成功取消餐廳收藏')
+        return res.redirect('back')
+
       })
   },
   addLike: (req, res) => {
@@ -169,7 +167,7 @@ const userController = {
   addFollowing: (req, res) => {
     return Followship.create({
       followingId: req.params.userId,
-      followerId: req.user.id
+      followerId: helpers.getUser(req).id
     }).then(() => {
       req.flash('success_messages', '成功追蹤使用者')
       return res.redirect('back')
@@ -179,7 +177,7 @@ const userController = {
     return Followship.destroy({
       where: {
         followingId: req.params.userId,
-        followerId: req.user.id
+        followerId: helpers.getUser(req).id
       }
     }).then(() => {
       req.flash('success_messages', '成功取消追蹤')
