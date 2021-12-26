@@ -76,6 +76,9 @@ module.exports = (app, passport) => {
   // 但這樣因為 '/restaurants/feeds' 這組字串也符合動態路由 '/restaurants/:id' 的結構，會被視為「:id 是 feeds」而導向單一餐廳的頁面
   // Feeds
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
+
+  // Top Restaurants
+  app.get('/restaurants/top', authenticated, restController.getTopRestaurant)
   // one Restaurant
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
   // Restaurant Dashboard
