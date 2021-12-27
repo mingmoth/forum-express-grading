@@ -67,6 +67,13 @@ const adminService = {
       })
     })
   },
+  deleteCategory: (req, res,callback) => {
+    return Category.findByPk(req.params.id).then((category) => {
+      category.destroy().then(() => {
+        callback({status: 'success', message:'餐廳類別刪除成功'})
+      })
+    })
+  },
   postRestaurant: (req, res, callback) => {
     if (!req.body.name) {
       callback({status: 'error', message: "請填寫餐廳名稱"})

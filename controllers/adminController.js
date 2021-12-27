@@ -52,27 +52,19 @@ const adminController = {
       req.flash('success_messages', data['message'])
       return res.redirect('/admin/categories')
     })
-    // if (!req.body.name) {
-    //   req.flash('error_messages', "請填寫餐廳類別名稱")
-    //   return res.redirect('back')
-    // }
-    // Category.findByPk(req.params.id).then(category => {
-    //   category.update({
-    //     name: req.body.name
-    //   }).then(() => {
-    //     req.flash('success_messages', '餐廳類別更新成功')
-    //     res.redirect('/admin/categories')
-    //   })
-    // })
   },
   // delete one Category
   deleteCategory: (req, res) => {
-    return Category.findByPk(req.params.id).then((category) => {
-      category.destroy().then(() => {
-        req.flash('success_messages', '餐廳類別刪除成功')
-        res.redirect('/admin/categories')
-      })
+    adminService.deleteCategory(req, res, (data) => {
+      req.flash('success_messages', data['message'])
+      return res.redirect('/admin/categories')
     })
+    // return Category.findByPk(req.params.id).then((category) => {
+    //   category.destroy().then(() => {
+    //     req.flash('success_messages', '餐廳類別刪除成功')
+    //     res.redirect('/admin/categories')
+    //   })
+    // })
   },
   // get all Users
   getUsers: (req, res) => {
