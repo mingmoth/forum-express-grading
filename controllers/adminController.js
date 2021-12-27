@@ -11,18 +11,21 @@ const adminService = require('../services/adminService')
 const adminController = {
   // get all Categories
   getCategories: (req, res) => {
-    Category.findAll({
-      raw: true,
-      nest: true
-    }).then(categories => {
-      if (req.params.id) {
-        Category.findByPk(req.params.id).then((category) => {
-          return res.render('admin/categories', { category: category.toJSON(), categories: categories })
-        })
-      } else {
-        return res.render('admin/categories', { categories: categories })
-      }
+    adminService.getCategories(req, res, (data) => {
+      return res.render('admin/categories', data)
     })
+    // Category.findAll({
+    //   raw: true,
+    //   nest: true
+    // }).then(categories => {
+    //   if (req.params.id) {
+    //     Category.findByPk(req.params.id).then((category) => {
+    //       return res.render('admin/categories', { category: category.toJSON(), categories: categories })
+    //     })
+    //   } else {
+    //     return res.render('admin/categories', { categories: categories })
+    //   }
+    // })
   },
   // create Category
   postCategory: async(req, res) => {
@@ -95,21 +98,11 @@ const adminController = {
     adminService.getRestaurants(req, res, (data) => {
       return res.render('admin/restaurants', data)
     })
-    // return Restaurant.findAll({
-    //   raw: true,
-    //   nest: true,
-    //   include: [Category]
-    // }).then(restaurants => {
-    //   return res.render('admin/restaurants', { restaurants: restaurants })
-    // })
   },
   // get one restaurant
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {
-      include: [Category]
-    }).then(restaurant => {
-      // 只需要處理「一筆資料」時，我們會建議用 .toJSON() 把 Sequelize 回傳的整包物件直接轉成 JSON 格式
-      return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data)
     })
   },
   // create page

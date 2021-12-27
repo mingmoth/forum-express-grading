@@ -17,6 +17,29 @@ const adminService = {
       callback({ restaurants: restaurants })
     })
   },
+  getRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [Category]
+    }).then(restaurant => {
+      // 只需要處理「一筆資料」時，我們會建議用 .toJSON() 把 Sequelize 回傳的整包物件直接轉成 JSON 格式
+      callback({ restaurant: restaurant.toJSON() })
+    })
+  },
+  // get all Categories
+  getCategories: (req, res, callback) => {
+    Category.findAll({
+      raw: true,
+      nest: true
+    }).then(categories => {
+      if (req.params.id) {
+        Category.findByPk(req.params.id).then((category) => {
+          callback({ category: category.toJSON(), categories: categories })
+        })
+      } else {
+        callback({ categories: categories })
+      }
+    })
+  },
 }
 
-module.exports =adminService
+module.exports = adminService

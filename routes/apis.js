@@ -7,5 +7,7 @@ const adminController = require('../controllers/api/adminController')
 // const commentController = require('../controllers/api/commentController')
 
 router.get('/admin/restaurants', adminController.getRestaurants)
+router.get('/admin/restaurants/:id', adminController.getRetaurant)
+router.get('/admin/categories', adminController.getCategories)
 
 module.exports = router
