@@ -54,7 +54,18 @@ const adminService = {
         callback({status: 'success', message: '餐廳類別新增成功'})
       })
     }
-
+  },
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      callback({status:'error', message:"請填寫餐廳類別名稱"})
+    }
+    Category.findByPk(req.params.id).then(category => {
+      category.update({
+        name: req.body.name
+      }).then(() => {
+        callback({status:'success', message:'餐廳類別更新成功'})
+      })
+    })
   },
   postRestaurant: (req, res, callback) => {
     if (!req.body.name) {
