@@ -40,6 +40,22 @@ const adminService = {
       }
     })
   },
+  postCategory: async(req, res , callback) => {
+    if (!req.body.newCategory) {
+      callback({status: 'error', message:"請填寫餐廳類別名稱"})
+    }
+    const check = await Category.findOne({ where: { name: req.body.newCategory } })
+    if (check) {
+      callback({status: 'error', message:"餐廳類別名稱重複"})
+    } else {
+      Category.create({
+        name: req.body.newCategory
+      }).then(categories => {
+        callback({status: 'success', message: '餐廳類別新增成功'})
+      })
+    }
+
+  },
   postRestaurant: (req, res, callback) => {
     if (!req.body.name) {
       callback({status: 'error', message: "請填寫餐廳名稱"})
