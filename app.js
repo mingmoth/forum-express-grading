@@ -5,6 +5,7 @@ const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
+const bodyParser = require('body-parser')
 const helpers = require('./_helpers')
 const app = express()
 const port = process.env.PORT || 3000
@@ -17,8 +18,8 @@ app.engine('hbs', exphbs({extname: '.hbs', helpers: require('./config/helpers')}
 app.set('view engine', 'hbs')
 
 // set body-parser
-app.use(express.urlencoded({extended: true}))
-
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 // 我們需要用到「快閃訊息 (flash message)」，這種 message 存在 session 裡面
 // set session and flash
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
