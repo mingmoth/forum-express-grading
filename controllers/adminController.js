@@ -14,18 +14,6 @@ const adminController = {
     adminService.getCategories(req, res, (data) => {
       return res.render('admin/categories', data)
     })
-    // Category.findAll({
-    //   raw: true,
-    //   nest: true
-    // }).then(categories => {
-    //   if (req.params.id) {
-    //     Category.findByPk(req.params.id).then((category) => {
-    //       return res.render('admin/categories', { category: category.toJSON(), categories: categories })
-    //     })
-    //   } else {
-    //     return res.render('admin/categories', { categories: categories })
-    //   }
-    // })
   },
   // create Category
   postCategory: async(req, res) => {
@@ -209,14 +197,20 @@ const adminController = {
     }
   },
   deleteRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id)
-      .then((restaurant) => {
-        restaurant.destroy()
-          .then((restaurant) => {
-            req.flash('success_messages', '成功刪除餐廳')
-            res.redirect('/admin/restaurants')
-          })
-      })
+    adminService.deleteRestaurant(req, res, (data) => {
+      if(data['status'] === 'success') {
+        req.flash('success_messages', '成功刪除餐廳')
+        return res.redirect('/admin/restaurants')
+      }
+    })
+    // return Restaurant.findByPk(req.params.id)
+    //   .then((restaurant) => {
+    //     restaurant.destroy()
+    //       .then((restaurant) => {
+    //         req.flash('success_messages', '成功刪除餐廳')
+    //         res.redirect('/admin/restaurants')
+    //       })
+    //   })
   }
 }
 
