@@ -6,7 +6,7 @@ const upload = multer({ dest: 'temp/'})
 const passport = require('../config/passport')
 
 const adminController = require('../controllers/api/adminController')
-// const restController = require('../controllers/api/restController')
+const restController = require('../controllers/api/restController')
 const userController = require('../controllers/api/userController')
 // const commentController = require('../controllers/api/commentController')
 
@@ -24,6 +24,9 @@ const authenticatedAdmin = (req, res, next) => {
 
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)
+
+router.get('/restaurants', authenticated, restController.getRestaurants)
+router.get('/restaurants/top', authenticated, restController.getTopRestaurant)
 
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants)
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRetaurant)

@@ -25,22 +25,6 @@ const adminController = {
       req.flash('success_messages', data['message'])
       return res.redirect('/admin/categories')
     })
-    // if (!req.body.newCategory) {
-    //   req.flash('error_messages', "請填寫餐廳類別名稱")
-    //   return res.redirect('back')
-    // }
-    // const check = await Category.findOne({where: {name: req.body.newCategory}})
-    // if(check) {
-    //   req.flash('error_messages', "餐廳類別名稱重複")
-    //   return res.redirect('back')
-    // } else {
-    //   Category.create({
-    //     name: req.body.newCategory
-    //   }).then(categories => {
-    //     req.flash('success_messages', '餐廳類別新增成功')
-    //     res.redirect('/admin/categories')
-    //   })
-    // } 
   },
   // update one Category
   putCategory: (req, res) => {
@@ -59,12 +43,6 @@ const adminController = {
       req.flash('success_messages', data['message'])
       return res.redirect('/admin/categories')
     })
-    // return Category.findByPk(req.params.id).then((category) => {
-    //   category.destroy().then(() => {
-    //     req.flash('success_messages', '餐廳類別刪除成功')
-    //     res.redirect('/admin/categories')
-    //   })
-    // })
   },
   // get all Users
   getUsers: (req, res) => {
