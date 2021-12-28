@@ -95,6 +95,26 @@ const restService  = {
       callback({ restaurant: restaurant.toJSON() })
     })
   },
+  getFeeds: (req, res, callback) => {
+    return Promise.all([
+      Restaurant.findAll({
+        limit: 10,
+        raw: true,
+        nest: true,
+        order: [['createdAt', 'DESC']],
+        include: [Category]
+      }),
+      Comment.findAll({
+        limit: 10,
+        raw: true,
+        nest: true,
+        order: [['createdAt', 'DESC']],
+        include: [User, Restaurant]
+      })
+    ]).then(([restaurants, comments]) => {
+      callback({ restaurants: restaurants, comments: comments })
+    })
+  },
 }
 
 module.exports = restService
