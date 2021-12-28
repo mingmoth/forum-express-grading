@@ -35,11 +35,14 @@ const restController = {
     })
   },
   getDashBoard: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {include: [
-      Category, {model: Comment}
-    ]}).then((restaurant) => {
-      return res.render('dashboard', {restaurant: restaurant.toJSON()})
+    restService.getDashBoard(req, res, (data) => {
+      return res.render('dashboard', data)
     })
+    // return Restaurant.findByPk(req.params.id, {include: [
+    //   Category, {model: Comment}
+    // ]}).then((restaurant) => {
+    //   return res.render('dashboard', {restaurant: restaurant.toJSON()})
+    // })
   },
   getFeeds: (req, res) => {
     return Promise.all([

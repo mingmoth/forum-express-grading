@@ -24,6 +24,11 @@ const restController = {
       return res.json(data)
     })
   },
+  getDashBoard: (req, res) => {
+    restService.getDashBoard(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = restController

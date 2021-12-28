@@ -86,6 +86,15 @@ const restService  = {
       })
     })
   },
+  getDashBoard: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [
+        Category, { model: Comment }
+      ]
+    }).then((restaurant) => {
+      callback({ restaurant: restaurant.toJSON() })
+    })
+  },
 }
 
 module.exports = restService
