@@ -7,6 +7,9 @@ module.exports = {
     }
     return options.inverse(this)
   },
+  // ifLength: function(a, b, options) {
+  //   if(a > b)
+  // },
   fromNow: function(a) {
     return moment(a).fromNow()
   }

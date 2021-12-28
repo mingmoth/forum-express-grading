@@ -57,16 +57,15 @@ const restService  = {
   getTopRestaurant: (req, res, callback) => {
     return Restaurant.findAll({
       include: [{ model: User, as: 'FavoritedUsers' }]
-    }).then(restaurants => {
+    }).then((restaurants) => {
       restaurants = restaurants.map(restaurant => ({
         ...restaurant.dataValues,
-        description: restaurant.description.length > 50 ? restaurant.description.substring(0, 50) + '...' : restaurant.description,
+        // description: restaurant.description.length > 50 ? restaurant.dataValues.description.substring(0, 50) + '...' : restaurant.description,
         favoritedCount: restaurant.FavoritedUsers.length,
         isFavorited: helpers.getUser(req).FavoritedRestaurants.map(d => d.id).includes(restaurant.id),
       }))
       restaurants = restaurants.sort((a, b) => b.favoritedCount - a.favoritedCount).slice(0, 10)
-      // console.log(restaurants)
-      callback({ restaurants: restaurants })
+      return callback({ restaurants: restaurants })
     })
   },
   getRestaurant: (req, res, callback) => {

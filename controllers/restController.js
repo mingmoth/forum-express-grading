@@ -20,18 +20,8 @@ const restController = {
     })
   },
   getTopRestaurant: (req, res) => {
-    return Restaurant.findAll({
-      include: [{ model: User, as: 'FavoritedUsers'}]
-    }).then(restaurants => {
-      restaurants = restaurants.map(restaurant => ({
-        ...restaurant.dataValues,
-        description: restaurant.description.length > 50 ? restaurant.description.substring(0, 50) + '...' : restaurant.description,
-        favoritedCount: restaurant.FavoritedUsers.length,
-        isFavorited: helpers.getUser(req).FavoritedRestaurants.map(d => d.id).includes(restaurant.id),
-      }))
-      restaurants = restaurants.sort((a, b) => b.favoritedCount - a.favoritedCount).slice(0, 10)
-      console.log(restaurants)
-      res.render('topRestaurant', {restaurants: restaurants})
+    restService.getTopRestaurant(req, res, (data) => {
+      return res.render('topRestaurant', data)
     })
   },
   getDashBoard: (req, res) => {
