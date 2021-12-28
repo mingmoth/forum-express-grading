@@ -15,24 +15,8 @@ const restController = {
     })
   },
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { include: 
-      [Category,
-        // 這在資料庫的術語裡叫做 eager loading，是預先加載的意思
-      {model: User, as: 'FavoritedUsers'},
-      { model: User, as: 'LikedUsers' },
-      {model: Comment, include: [User]}]
-    }).then(async(restaurant) =>  {
-      await restaurant.increment('viewCounts')
-      return res.render('restaurant', {
-        restaurant: restaurant.toJSON(),
-        isFavorited: restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id),
-        isLiked: restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
-      })
-      // const data = ({
-      //   ...restaurant.dataValues,
-      //   categoryName: restaurant.dataValues.Category.name
-      // })
-      // return res.render('restaurant', {restaurant: data})
+    restService.getRestaurant(req, res, (data) => {
+      return res.render('restaurant', data)
     })
   },
   getTopRestaurant: (req, res) => {
